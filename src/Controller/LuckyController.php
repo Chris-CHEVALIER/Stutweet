@@ -14,7 +14,6 @@ class LuckyController extends AbstractController
     public function number(): Response
     {
         $number = random_int(0, 100);
-
         return new Response(
             "<html>
                 <h1>Votre nombre fétiche : $number</h1>

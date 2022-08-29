@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mes postes
+{% endblock %}
+
+{% block body %}
+	{% if age > 18 %}
+		<p>Vous êtes
+			<b>majeur</b>
+		</p>
+	{% else %}
+		<p>Vous êtes
+			<b>mineur</b>
+		</p>
+	{% endif %}
+
+	Vous avez
+	{{age}}
+	ans.
+
+	{% set fruits = ["banana", "apple", "cherry"] %}
+
+	<ul>
+		{% for fruit in fruits %}
+			<li>{{ fruit }}</li>
+		{% endfor %}
+	</ul>
+
+	{% set numbers = [3, 2, 7, 1, 8, 9, 14, 4] %}
+	<i>{{max(numbers)}}</i>
+	{% set myTitle = '<script>alert("Coucou")</script>' %}
+	{{myTitle}}
+
+	{{"now"|date("d/m/Y")}}
+
+	<u>{{numbers|length}}</u>
+
+	<button class="btn btn-primary">Mon super bouton</button>
+{% endblock %}
