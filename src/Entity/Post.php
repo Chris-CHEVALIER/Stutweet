@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class Post {
+class Post
+{
     private int $id;
     private ?string $title = NULL;
     private string $content;
@@ -50,7 +51,7 @@ class Post {
     {
         return $this->image;
     }
- 
+
     public function setImage($image)
     {
         $this->image = $image;

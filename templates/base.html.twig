@@ -39,13 +39,17 @@
 						</ul>
 						<form class="d-flex">
 							<input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-							<button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+							<button class="btn btn-outline-primary" type="submit">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button>
 						</form>
 					</div>
 				</div>
 			</nav>
 		{% endblock %}
 
-		{% block body %}{% endblock %}
-	</body>
-</html>
+		<div class="container">
+			{% block body %}{% endblock %}
+		</div>
+		</body>
+	</html>
