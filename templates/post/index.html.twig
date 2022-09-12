@@ -1,25 +1,22 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
 	<div class="d-flex justify-content-around flex-wrap container mt-5">
+		{% for post in posts %}
+			<div class="card" style="width: 18rem;">
+				{% if post.image  %}
+					<img src={{ post.image }} class="card-img-top" alt={{post.title}}>
+				{% endif %}
+				<div class="card-body">
+					{% if post.title  %}
+						<h5 class="card-title">{{ post.title }}</h5>
+					{% endif %}
+					<p class="card-text">{{ post.content }}</p>
 
-		<div class="card" style="width: 18rem;">
-			<img src="..." class="card-img-top" alt="...">
-			<div class="card-body">
-				<h5 class="card-title">Post n° 1</h5>
-				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-				<a href="#" class="btn btn-primary">Go somewhere</a>
+					<a href="#" class="btn btn-danger">Supprimer</a>
+					<a href="#" class="btn btn-warning">Modifier</a>
+				</div>
 			</div>
-		</div>
-
-		<div class="card" style="width: 18rem;">
-			<img src="..." class="card-img-top" alt="...">
-			<div class="card-body">
-				<h5 class="card-title">Post n° 2</h5>
-				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-				<a href="#" class="btn btn-primary">Go somewhere</a>
-			</div>
-		</div>
+		{% endfor %}
 	</div>
 {% endblock %}
