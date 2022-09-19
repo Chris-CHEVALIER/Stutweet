@@ -43,13 +43,20 @@
 								<i class="fa-solid fa-magnifying-glass"></i>
 							</button>
 						</form>
+
+						{% if app.user %}
+							Bienvenue
+							{{ app.user.username}}
+							<a href="/logout">Se déconnecter</a>
+						{% else %}
+							<a href="/login">Se connecter</a>
+						{% endif %}
 					</div>
 				</div>
 			</nav>
 		{% endblock %}
 
-		<div class="container">
-			{% block body %}{% endblock %}
-		</div>
+		<div class="container"> {% block body %}{% endblock %}
+			</div>
 		</body>
 	</html>

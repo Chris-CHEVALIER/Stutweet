@@ -18,6 +18,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login
+            logout:
+                path: logout
             provider: app_user_provider
         
             # activate different ways to authenticate
