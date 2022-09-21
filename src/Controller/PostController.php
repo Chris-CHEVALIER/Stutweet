@@ -30,17 +30,18 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $post->setUser($this->getUser());
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute("home");
         }
         return $this->render('post/form.html.twig', [
-            "post_form" => $form->createView()
+            "form" => $form->createView()
         ]);
     }
 
-    #[Route('/post/edit/{id<\d+>}', name:"edit-post")]
+    #[Route('/post/edit/{id<\d+>}', name: "edit-post")]
     public function update(Request $request, Post $post, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(PostType::class, $post);
@@ -55,7 +56,7 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/post/delete/{id<\d+>}', name:"delete-post")]
+    #[Route('/post/delete/{id<\d+>}', name: "delete-post")]
     public function delete(Post $post, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
@@ -64,7 +65,7 @@ class PostController extends AbstractController
         return $this->redirectToRoute("home");
     }
 
-    #[Route('/post/copy/{id<\d+>}', name:"copy-post")]
+    #[Route('/post/copy/{id<\d+>}', name: "copy-post")]
     public function duplicate(Post $post, ManagerRegistry $doctrine): Response
     {
         $copyPost = clone $post;

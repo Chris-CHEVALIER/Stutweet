@@ -13,9 +13,14 @@
 					{% endif %}
 					<p class="card-text">{{ post.content }}</p>
 
-					<a href="{{ path('delete-post', {'id': post.id}) }}" class="btn btn-danger">Supprimer</a>
-					<a href="{{ path('edit-post', {'id': post.id}) }}" class="btn btn-warning">Modifier</a>
-					<a href="{{ path('copy-post', {'id': post.id}) }}" class="btn btn-info">Copier</a>
+					{% if app.user %}
+						<a href="{{ path('delete-post', {'id': post.id}) }}" class="btn btn-danger">Supprimer</a>
+						<a href="{{ path('edit-post', {'id': post.id}) }}" class="btn btn-warning">Modifier</a>
+						<a href="{{ path('copy-post', {'id': post.id}) }}" class="btn btn-info">Copier</a>
+					{% endif %}
+				</div>
+				<div class="card-footer">
+					<small class="text-muted">{{post.user.username}}</small>
 				</div>
 			</div>
 		{% endfor %}

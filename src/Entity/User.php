@@ -29,10 +29,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    private ?string $confirm = null;
+
     #[ORM\OneToMany(targetEntity: "App\Entity\Post", mappedBy: "user")]
     private $posts;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher) {
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
         $this->passwordHasher = $passwordHasher;
         $this->posts = new ArrayCollection();
     }
@@ -108,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Get the value of posts
-     */ 
+     */
     public function getPosts()
     {
         return $this->posts;
@@ -118,10 +121,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of posts
      *
      * @return  self
-     */ 
+     */
     public function setPosts($posts)
     {
         $this->posts = $posts;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of confirm
+     */ 
+    public function getConfirm()
+    {
+        return $this->confirm;
+    }
+
+    /**
+     * Set the value of confirm
+     *
+     * @return  self
+     */ 
+    public function setConfirm($confirm)
+    {
+        $this->confirm = $confirm;
 
         return $this;
     }
