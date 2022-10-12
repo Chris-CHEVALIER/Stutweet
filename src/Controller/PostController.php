@@ -4,34 +4,56 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\PostRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PostController extends AbstractController
 {
     #[Route('/', name: "home")]
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(Request $request, PostRepository $repository): Response
     {
-        $repository = $doctrine->getRepository(Post::class);
+        $search = $request->request->get("search"); // $_POST["search"]
         $posts = $repository->findAll(); // SELECT * FROM `post`;
-        dump($posts);
+        if ($search) {
+            $posts = $repository->findBySearch($search); // SELECT * FROM `post` WHERE title LIKE :search;
+        }
+
         return $this->render('post/index.html.twig', [
             "posts" => $posts
         ]);
     }
 
     #[Route('/post/new')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+                try {
+                    $image->move(
+                        $this->getParameter('uploads'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    dump($e);
+                }
+                $post->setImage($newFilename);
+            }
+
             $post->setUser($this->getUser());
             $post->setPublishedAt(new \DateTime());
             $em = $doctrine->getManager();
@@ -93,4 +115,12 @@ class PostController extends AbstractController
         $em->flush();
         return $this->redirectToRoute("home");
     }
+
+    /* #[Route('/post/search/{search}', name: "search-post")]
+    public function search(string $search): Response
+    {
+        dump($search);
+        return new Response("");
+        //return $this->redirectToRoute("home");
+    } */
 }

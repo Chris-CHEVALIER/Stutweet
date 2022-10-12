@@ -19,6 +19,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    private ?string $uuid;
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
@@ -147,6 +149,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setConfirm($confirm)
     {
         $this->confirm = $confirm;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of uuid
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Set the value of uuid
+     *
+     * @return  self
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
